@@ -10,8 +10,8 @@
 <body>
 <div>
 	<ul>
-		<li style="list-style: none;"><a href="/login">로그인</a></li>
-		<li style="list-style: none;"><a href="/join">회원가입</a></li>
+		<li style="list-style: none;"><a href="/member/login">로그인</a></li>
+		<li style="list-style: none;"><a href="/member/join">회원가입</a></li>
 	</ul>
 </div>
 </body>

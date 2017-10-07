@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +19,7 @@ import com.victor.securityboard.member.service.MemberService;
 import com.victor.securityboard.security.SecurityUtil;
 
 @Controller
+@RequestMapping(value="/member")
 public class MemberController {
 
 	@Autowired
@@ -31,7 +32,7 @@ public class MemberController {
 	HttpSession session;*/
 	
 	@Autowired
-	BCryptPasswordEncoder pwEncoder;
+	PasswordEncoder pwEncoder;
 	
 	//로그인
 	@RequestMapping(value="/login", method=RequestMethod.GET)
