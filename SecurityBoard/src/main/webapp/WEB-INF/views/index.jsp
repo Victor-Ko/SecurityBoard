@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>Welcome!!</title>
+<title>승재바보</title>
 </head>
 <body>
 <div>
