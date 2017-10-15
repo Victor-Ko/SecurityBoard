@@ -9,29 +9,29 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#insertForm").submit(function(){
+	$("#insertBtn").click(function(){
 		if($("#title").val() == ''){
 			alert('제목을 입력하세요');
 			$("#title").focus();
-			return false;
+			return;
 		}
 		if($("#contents").val() == ''){
 			alert('내용을 입력하세요');
 			$("#contents").focus();
-			return false;
+			return;
 		}
 		
 		$.ajax({
-			url:'board/insertAction',
+			url:'/board/insertAction',
 			type:'post',
 			data:$("#insertForm").serialize(),
 			success:function(data){
 				if(data.result == 'Y'){
 					alert(data.message);
-					loaction.href = data.redirectUrl;
-				}else{
+					location.href = data.redirectUrl;
+				}else if(data.result='N'){
 					alert(data.message);
-					loaction.href = data.redirectUrl;
+					location.href = data.redirectUrl;
 				}
 			},
 			error:function(){
@@ -42,13 +42,19 @@ $(document).ready(function(){
 	});
 });
 </script>
+<style type="text/css">
+li{
+	list-style: none;
+}
+</style>
 </head>
 <body>
 <div>
 	<form action="insertAction" method="post" id="insertForm">
 		<ul>
-			<li>제목 : <input type="text" id="title" name="title"></li>
-			<li>내용 : <input type="text" id="contents" name="contents"></li>
+			<li>제목 : <input type="text" id="title" name="board_title"></li>
+			<li>내용 : <input type="text" id="contents" name="board_contents"></li>
+			<li><input type="button" value="게시글 등록" id="insertBtn"></li>
 		</ul>
 	</form>
 </div>

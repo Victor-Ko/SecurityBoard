@@ -30,6 +30,8 @@
 	</tr>
 	</c:forEach>
 </table>
-
+<div>
+	<input type="button" value="게시글 작성" onclick="location.href='/board/insertForm'">
+</div>
 </body>
 </html>

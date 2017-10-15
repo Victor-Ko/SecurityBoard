@@ -26,8 +26,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/home")
-	public ModelAndView loginAction(HttpServletResponse res) throws IOException{
-		ModelAndView mav = new ModelAndView();
+	public void home(HttpServletResponse res) throws IOException{
 		
 		MemberVO member = null;
 		
@@ -42,9 +41,10 @@ public class HomeController {
 		SecurityContextHolder.getContext().
 		setAuthentication(new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities()));
 		
-		mav.addObject("member", member);
-		mav.setViewName("/board/home");
+		/*mav.addObject("member", member);
+		mav.setViewName("/board/list");*/
 		
-		return mav;
+		res.sendRedirect("/board/list");
+		
 	}
 }
