@@ -17,4 +17,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 		</if>
  		</where>
  	</select> 
+ 	
+ 	<insert id="insertBoard" parameterType="com.victor.securityboard.board.domain.BoardVO">
+ 		INSERT INTO board(user_id,board_title,board_views,board_reg_date,board_contents)
+ 		VALUES(#{user_id},#{board_title},0,now(),#{board_contents})
+ 	</insert>
 </mapper>
