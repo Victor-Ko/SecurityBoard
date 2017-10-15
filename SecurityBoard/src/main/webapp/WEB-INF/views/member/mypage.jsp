@@ -8,7 +8,6 @@
 <title>내 정보 보기</title>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		
