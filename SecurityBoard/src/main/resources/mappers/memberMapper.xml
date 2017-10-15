@@ -26,4 +26,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	(id,auth) VALUES(#{id},#{auth})
  	</insert>
     
+    <update id="updateMember">
+    	UPDATE members
+    	SET pw=#{pw}
+    	WHERE id=#{id}
+    </update>
 </mapper>

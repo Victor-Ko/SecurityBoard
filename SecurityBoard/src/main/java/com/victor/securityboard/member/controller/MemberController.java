@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.victor.securityboard.member.domain.AuthorityVO;
@@ -69,10 +70,11 @@ public class MemberController {
 		memberVO.setPw(pwEncoder.encode(memberVO.getPw()));
 		
 		if(memberVO != null){
-			//System.out.println(memberVO.toString());
+			System.out.println(memberVO.toString());
 			memberService.insertMember(memberVO);
 			
-			AuthorityVO authorityVO = null;
+			AuthorityVO authorityVO = new AuthorityVO();
+			
 			authorityVO.setId(memberVO.getId());
 			authorityVO.setAuth("ROLE_USER");
 			
@@ -88,11 +90,11 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		/*String id = (String)session.getAttribute("id");*/
-		
 		MemberVO member = null;
 		
 		member = util.getCurrentMember();
+		
+		member.setPw(member.getPw());
 		
 		mav.addObject("member", member);
 		mav.setViewName("/member/mypage");
@@ -100,30 +102,28 @@ public class MemberController {
 		return mav;
 	}
 	
-	//회원수정
+	//회원수정 폼
 	@RequestMapping(value="/update")
 	public ModelAndView updateForm(HttpSession session){
 		
-		String id = (String)session.getAttribute("id");
-		
-		MemberVO memberVO = memberService.selectMember(id);
-		
 		ModelAndView mav = new ModelAndView();
 		
-		mav.addObject("member", memberVO);
 		mav.setViewName("/member/updateForm");
 		
 		return mav;
 	}
 	
 	@RequestMapping(value="/updateAction")
-	public ModelAndView updateAction(HttpSession session, MemberVO memberVO){
+	public ModelAndView updateAction(@RequestParam("id")String id, @RequestParam("pw")String pw){
 		ModelAndView mav = new ModelAndView();
 		
-		memberVO.setPw(pwEncoder.encode(memberVO.getPw()));
+		MemberVO memberVo = new MemberVO();
 		
-		if(memberVO != null){
-			memberService.updateMember(memberVO);
+		memberVo.setId(id);
+		memberVo.setPw(pwEncoder.encode(pw));
+		
+		if(memberVo != null){
+			memberService.updateMember(memberVo);
 		}
 		
 		mav.setViewName("/member/mypage");

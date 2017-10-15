@@ -9,9 +9,7 @@
 </head>
 <body>
 어서오십시오<br>
-${member }<br>
 <a href="/member/mypage">내정보 보기</a><br>
 <a href="/member/logout">로그아웃</a>
-움저ㅏ움주어ㅏㅁ자ㅜㅇㅁ
 </body>
 </html>
