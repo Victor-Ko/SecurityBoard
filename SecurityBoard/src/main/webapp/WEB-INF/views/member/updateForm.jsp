@@ -19,13 +19,19 @@ $(document).ready(function(){
 		$.ajax({
 			url:'/member/updateAction',
 			type:'post',
-			dateStr:{id:$("#id").val(), pw:$("#pw"}.val())},
+			data:{id:$("#id").val(), pw:$("#pw").val()},
+			dataType:"json",
 			success:function(data){
-				alert('회원정보 수정에 성공했습니다');
-				location.href='/member/mypage';
+				if(data.result == 'Y'){
+					alert(data.message);
+					location.href=data.redirectUrl;
+				}else if(data.result == 'N'){
+					alert(data.message);
+					location.href=data.redirectUrl;
+				}
 			},
 			error:function(){
-				alert('회원정보 수정에 실패했습니다');
+				alert('네트워크 오류');
 				location.href='/member/mypage';
 			}
 		});
