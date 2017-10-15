@@ -27,9 +27,12 @@
 		<td>${vo.user_id }</td>
 		<td>${vo.board_views }</td>
 		<td>${vo.board_reg_date }</td>
+		<td>${vo}</td>
 	</tr>
 	</c:forEach>
 </table>
+
+<div>${blockSize}</div>
 
 </body>
 </html>

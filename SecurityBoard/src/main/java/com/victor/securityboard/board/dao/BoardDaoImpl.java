@@ -19,4 +19,9 @@ public class BoardDaoImpl implements BoardDao{
 		return session.selectList("BoardDao.selectBoard", boardVO);
 	}
 
+	@Override
+	public int selectBoardCount(BoardVO boardVO) {
+		return session.selectOne("BoardDao.selectBoardCount", boardVO);
+	}
+
 }

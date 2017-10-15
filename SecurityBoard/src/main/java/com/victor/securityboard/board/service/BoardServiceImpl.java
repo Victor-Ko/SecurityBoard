@@ -19,4 +19,9 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.selectBoard(boardVO);
 	}
 
+	@Override
+	public int selectBoardCount(BoardVO boardVO) {
+		return boardDao.selectBoardCount(boardVO);
+	}
+
 }

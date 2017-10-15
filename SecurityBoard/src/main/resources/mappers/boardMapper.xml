@@ -5,6 +5,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  
 <mapper namespace="BoardDao">
  	
+ 	<select id="selectBoardCount" parameterType="com.victor.securityboard.board.domain.BoardVO" resultType="java.lang.Integer">
+ 		SELECT COUNT(*)
+ 		FROM board
+ 		<where>
+	 		<if test="board_seq gt 0">
+	 			board_seq = #{board_seq}
+	 		</if>
+	 		<if test="user_id != null">
+	 			user_id LIKE '%' || #{user_id}
+	 		</if>
+ 		</where>
+ 	</select>
+ 	
  	<select id="selectBoard" parameterType="com.victor.securityboard.board.domain.BoardVO" resultType="com.victor.securityboard.board.domain.BoardVO">
  		SELECT *
  		FROM board
@@ -16,5 +29,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 			user_id LIKE '%' || #{user_id}
 	 		</if>
  		</where>
+ 		<if test="startNum gte 0 and pageSize gte 0">
+ 			limit #{startNum}, #{pageSize}
+ 		</if>
  	</select> 
 </mapper>

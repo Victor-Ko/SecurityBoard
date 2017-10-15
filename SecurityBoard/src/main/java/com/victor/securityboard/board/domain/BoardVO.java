@@ -2,7 +2,9 @@ package com.victor.securityboard.board.domain;
 
 import java.sql.Date;
 
-public class BoardVO {
+import com.victor.securityboard.util.CommonVO;
+
+public class BoardVO extends CommonVO {
 
    private int board_seq;
    private String user_id;
@@ -48,13 +50,13 @@ public class BoardVO {
       this.board_contents = board_contents;
    }
    
-   /*
-   @Override
-   public String toString() {
-      return "BoardVO [board_seq=" + board_seq + ", user_id=" + user_id + ", board_title=" + board_title
-            + ", board_views=" + board_views + ", board_reg_date=" + board_reg_date + ", board_contents="
-            + board_contents + "]";
-   }
-   */
+	@Override
+	public String toString() {
+		return "BoardVO [board_seq=" + board_seq + ", user_id=" + user_id + ", board_title=" + board_title
+				+ ", board_views=" + board_views + ", board_reg_date=" + board_reg_date + ", board_contents="
+				+ board_contents + ", getCurPage()=" + getCurPage() + ", getPageSize()=" + getPageSize()
+				+ ", getBlockSize()=" + getBlockSize() + ", getStartNum()=" + getStartNum() + "]";
+	}
+   
    
 }
