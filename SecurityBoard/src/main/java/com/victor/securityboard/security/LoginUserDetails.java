@@ -15,7 +15,7 @@ public class LoginUserDetails extends User {
 		super(member.getId(), member.getPw(), true, true, true, true, member.getAuthorities());
 		this.member = member;
 		
-		System.out.println("LoginUserDetail member : " + member);
+		//System.out.println("LoginUserDetail member : " + member);
 		//String id = member.getId();
 	}
 

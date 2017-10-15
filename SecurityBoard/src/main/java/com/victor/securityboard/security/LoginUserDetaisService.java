@@ -32,7 +32,7 @@ public class LoginUserDetaisService implements UserDetailsService {
 		// 멤버 권한 셋팅 필요
 		member.setAuthorities(authorityService.selectAuth(member.getId()));
 		
-		System.out.println("loadUserByUsername member : " + member);
+		//System.out.println("loadUserByUsername member : " + member);
 		return new LoginUserDetails(member);
 	}
 }
