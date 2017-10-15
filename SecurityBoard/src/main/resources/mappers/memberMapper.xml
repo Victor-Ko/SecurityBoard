@@ -21,6 +21,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		(id,pw,name) VALUES(#{id},#{pw},#{name})
  	</insert>
  	
+ 	<update id="updateMember" parameterType="com.victor.securityboard.member.domain.MemberVO">
+ 		UPDATE members
+ 		SET pw=#{pw}
+ 		WHERE id=#{id}
+ 	</update>
+ 	
  	<insert id="insertAuth" parameterType="com.victor.securityboard.member.domain.AuthorityVO">
 	 	INSERT INTO auths
 	 	(id,auth) VALUES(#{id},#{auth})

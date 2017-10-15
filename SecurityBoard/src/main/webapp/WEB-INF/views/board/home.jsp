@@ -11,5 +11,6 @@
 어서오십시오<br>
 <a href="/member/mypage">내정보 보기</a><br>
 <a href="/member/logout">로그아웃</a>
+
 </body>
 </html>
