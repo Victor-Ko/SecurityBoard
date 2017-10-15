@@ -7,4 +7,6 @@ import com.victor.securityboard.member.domain.AuthorityVO;
 public interface AuthorityService {
 
 	public List<AuthorityVO> selectAuth(String id);
+	
+	public void insertAuth(AuthorityVO authorityVO);
 }

@@ -19,4 +19,9 @@ public class AuthorityDaoImpl implements AuthorityDao{
 		return session.selectList("MemberDao.selectAuth", id);
 	}
 
+	@Override
+	public void insertAuth(AuthorityVO authorityVO) {
+		session.insert("MemberDao.insertAuth", authorityVO);
+	}
+
 }

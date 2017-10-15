@@ -8,4 +8,6 @@ public interface AuthorityDao {
 
 	public List<AuthorityVO> selectAuth(String id);
 	
+	public void insertAuth(AuthorityVO authorityVO);
+	
 }

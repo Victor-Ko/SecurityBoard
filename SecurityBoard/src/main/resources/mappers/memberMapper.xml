@@ -18,7 +18,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	
  	<insert id="insertMember" parameterType="com.victor.securityboard.member.domain.MemberVO">
  		INSERT INTO members
- 		(id,pw,name) VALUES(#{id},#{pw},#{name});
+ 		(id,pw,name) VALUES(#{id},#{pw},#{name})
+ 	</insert>
+ 	
+ 	<insert id="insertAuth" parameterType="com.victor.securityboard.member.domain.AuthorityVO">
+	 	INSERT INTO auths
+	 	(id,auth) VALUES(#{id},#{auth})
  	</insert>
     
 </mapper>

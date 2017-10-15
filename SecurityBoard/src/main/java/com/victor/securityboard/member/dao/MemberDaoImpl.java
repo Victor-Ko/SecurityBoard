@@ -22,4 +22,14 @@ public class MemberDaoImpl implements MemberDao{
 		session.insert("MemberDao.insertMember", memberVO);
 	}
 
+	@Override
+	public void updateMember(MemberVO memberVO) {
+		session.update("MemberDao.updateMember", memberVO);
+	}
+
+	@Override
+	public void deleteMember(String id) {
+		session.delete("MemberDao.deleteMemebr", id);
+	}
+
 }
