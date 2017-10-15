@@ -14,5 +14,8 @@ public interface MemberService {
 	public void updateMember(MemberVO memberVO);
 	
 	//회원 탈퇴
-	public void deleteMember(String id);
+	public void deleteMember(MemberVO memberVO);
+		
+	//권한 삭제
+	public void deleteAuth(MemberVO memberVO);
 }

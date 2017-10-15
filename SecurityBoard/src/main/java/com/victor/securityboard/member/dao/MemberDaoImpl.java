@@ -28,8 +28,13 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
-	public void deleteMember(String id) {
-		session.delete("MemberDao.deleteMemebr", id);
+	public void deleteMember(MemberVO memberVO) {
+		session.delete("MemberDao.deleteMember", memberVO);
+	}
+
+	@Override
+	public void deleteAuth(MemberVO memberVO) {
+		session.delete("MemberDao.deleteAuth", memberVO);
 	}
 
 }

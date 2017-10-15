@@ -24,4 +24,5 @@ public class AuthorityDaoImpl implements AuthorityDao{
 		session.insert("MemberDao.insertAuth", authorityVO);
 	}
 
+	
 }

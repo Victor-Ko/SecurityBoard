@@ -8,8 +8,46 @@
 <title>내 정보 보기</title>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('#deleteBtn').click(function(){
+			
+			$.ajax({
+				url : '/member/deleteAction',
+				type : 'POST',
+				data : {
+					id : $('#id').val()
+				},
+				success : function(data) {
+					if(data.result == "Y") { 
+						alert("회원탈퇴에 성공하였습니다.");
+					}else {
+						alert("회원탈퇴에 실패하였습니다.");
+					}
+					
+					// 이동 url이 없을시에는 해당페이지에 머문다.
+					if(data.redirectUrl != '') {
+						location.href = data.redirectUrl;
+					}
+				},
+				error : function(err) {
+					alert('Ajax Error.');
+					return;
+				}
+			});
+			
+		});
+		
+	});
+</script>
 <body>
 <div>
+	<form>
+		<input type="hidden" name="id" id="id" value="${member.id}" />
+	</form>
+	
 	아이디 : ${member.id }<br>
 	이름 : ${member.name }
 	<div style="text-align: center;">

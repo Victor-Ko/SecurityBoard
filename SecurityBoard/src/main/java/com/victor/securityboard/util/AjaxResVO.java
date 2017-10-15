@@ -6,6 +6,7 @@ public class AjaxResVO {
 	private String message; //응답 메세지
 	private String redirectUrl; // 처리완료후 이동할 url
 	
+	
 	public String getResult() {
 		return result;
 	}

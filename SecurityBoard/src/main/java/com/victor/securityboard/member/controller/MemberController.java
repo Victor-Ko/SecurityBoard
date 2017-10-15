@@ -7,13 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -75,11 +72,10 @@ public class MemberController {
 		memberVO.setPw(pwEncoder.encode(memberVO.getPw()));
 		
 		if(memberVO != null){
-			System.out.println(memberVO.toString());
+			//System.out.println(memberVO.toString());
 			memberService.insertMember(memberVO);
 			
 			AuthorityVO authorityVO = new AuthorityVO();
-			
 			authorityVO.setId(memberVO.getId());
 			authorityVO.setAuth("ROLE_USER");
 			
@@ -95,11 +91,11 @@ public class MemberController {
 		
 		ModelAndView mav = new ModelAndView();
 		
+		/*String id = (String)session.getAttribute("id");*/
+		
 		MemberVO member = null;
 		
 		member = util.getCurrentMember();
-		
-		member.setPw(member.getPw());
 		
 		mav.addObject("member", member);
 		mav.setViewName("/member/mypage");
@@ -107,78 +103,65 @@ public class MemberController {
 		return mav;
 	}
 	
-	//회원수정 폼
+	//회원수정
 	@RequestMapping(value="/update")
 	public ModelAndView updateForm(HttpSession session){
 		
+		String id = (String)session.getAttribute("id");
+		
+		MemberVO memberVO = memberService.selectMember(id);
+		
 		ModelAndView mav = new ModelAndView();
-		MemberVO member = new MemberVO();
 		
-		member = util.getCurrentMember();
-		
-		mav.addObject("member", member);
+		mav.addObject("member", memberVO);
 		mav.setViewName("/member/updateForm");
 		
 		return mav;
 	}
 	
 	@RequestMapping(value="/updateAction")
-	@ResponseBody
-	public AjaxResVO updateAction(@RequestParam("id")String id, @RequestParam("pw")String pw){
+	public ModelAndView updateAction(HttpSession session, MemberVO memberVO){
+		ModelAndView mav = new ModelAndView();
 		
-		MemberVO memberVo = new MemberVO();
-		MemberVO member = new MemberVO();
-		AjaxResVO ajaxResVO = new AjaxResVO();
+		memberVO.setPw(pwEncoder.encode(memberVO.getPw()));
 		
-		member = util.getCurrentMember();
-		
-		if(member != null){
-			memberVo.setId(id);
-			memberVo.setPw(pwEncoder.encode(pw));
-			
-			System.out.println(memberVo);
-			
-			try{
-				memberService.updateMember(memberVo);
-				ajaxResVO.setResult("Y");
-				ajaxResVO.setMessage("회원수정 성공");
-				ajaxResVO.setRedirectUrl("/member/mypage");
-			}catch(Exception e){
-				e.printStackTrace();
-				ajaxResVO.setResult("N");
-				ajaxResVO.setMessage("회원수정 실패");
-				ajaxResVO.setRedirectUrl("/member/mypage");
-			}
-		}else{
-			ajaxResVO.setResult("N");
-			ajaxResVO.setMessage("올바른 접근이 아닙니다");
-			ajaxResVO.setRedirectUrl("/member/login");
+		if(memberVO != null){
+			memberService.updateMember(memberVO);
 		}
 		
-		return ajaxResVO;
+		mav.setViewName("/member/mypage");
+		
+		return mav;
 	}
 	
 	//회원탈퇴
 	@RequestMapping(value="/deleteAction")
-	public void deleteAction(HttpServletResponse res, HttpSession session) throws IOException{
+	@ResponseBody
+	public AjaxResVO deleteAction(HttpServletRequest req, HttpServletResponse res, MemberVO memberVo) throws IOException{
 	
-		String id = (String)session.getAttribute("id");
+		HttpSession session = req.getSession();
+		AjaxResVO resVo     = new AjaxResVO();
 		
-		memberService.deleteMember(id);
+		MemberVO loginUser = util.getCurrentMember();
 		
-		session.invalidate();
+		// 1. 로그인 상태가 아닐시
+		// 2. 프론트로부터 사용자 id의 데이터가 넘어오지 않은 경우
+		// 3. 현재 사용자가 보고있는 페이지의 데이터가 로그인한 사용자와 정보가 다를 때 
+		if(loginUser == null || memberVo.getId() == null || !memberVo.getId().equals(loginUser.getId())) {
+			resVo.setResult("N");
+			resVo.setMessage("올바른 접근이 아닙니다.");
+			resVo.setRedirectUrl("");
+		}else {
+			// 권한 삭제후 해당 계정 삭제
+			memberService.deleteAuth(memberVo);
+			memberService.deleteMember(memberVo);
+			session.invalidate();
+			
+			resVo.setResult("Y");
+			resVo.setMessage("회원탈퇴가 완료되었습니다.");
+			resVo.setRedirectUrl("/");
+		}
 		
-		res.sendRedirect("/");
-	}
-	
-	@ExceptionHandler(Exception.class)
-	private void exceptionHandler(HttpServletRequest req, Exception e) {
-		System.err.println(e.getMessage());
-	}
-	
-	@ExceptionHandler(AccessDeniedException.class)
-	private void AccessDeniedExceptionHandler(HttpServletRequest req, HttpServletResponse res, Exception e) throws IOException {
-		System.err.println(e.getMessage());
-		res.sendRedirect("/");
+		return resVo;
 	}
 }
