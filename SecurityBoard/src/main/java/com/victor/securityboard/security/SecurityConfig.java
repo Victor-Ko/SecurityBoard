@@ -25,9 +25,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
         .authorizeRequests()
         	// 해당 url은 전체공개한다.
-            .antMatchers("/login", "/join", "/resources/**").anonymous()
+            .antMatchers("/login", "/join", "/resources/**", "/list").anonymous()
             // 해당 url은 반드시 권한이 있어야 접근가능하도록 한다.
-        	.antMatchers("/home","/mypage").authenticated()
+        	.antMatchers("/home","/mypage","/insertForm").authenticated()
         .and()
         	.formLogin()
         	.loginPage("/member/login")
