@@ -2,9 +2,9 @@ package com.victor.securityboard.util;
 
 public class AjaxResVO {
 
-	public String result; // Y, N
-	public String message; //응답 메세지
-	public String redirectUrl; // 처리완료후 이동할 url
+	private String result; // Y, N
+	private String message; //응답 메세지
+	private String redirectUrl; // 처리완료후 이동할 url
 	
 	
 	public String getResult() {

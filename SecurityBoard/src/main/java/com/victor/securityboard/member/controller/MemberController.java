@@ -2,6 +2,7 @@ package com.victor.securityboard.member.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.victor.securityboard.member.domain.AuthorityVO;
@@ -17,6 +19,7 @@ import com.victor.securityboard.member.domain.MemberVO;
 import com.victor.securityboard.member.service.AuthorityService;
 import com.victor.securityboard.member.service.MemberService;
 import com.victor.securityboard.security.SecurityUtil;
+import com.victor.securityboard.util.AjaxResVO;
 
 @Controller
 @RequestMapping(value="/member")
@@ -72,7 +75,7 @@ public class MemberController {
 			//System.out.println(memberVO.toString());
 			memberService.insertMember(memberVO);
 			
-			AuthorityVO authorityVO = null;
+			AuthorityVO authorityVO = new AuthorityVO();
 			authorityVO.setId(memberVO.getId());
 			authorityVO.setAuth("ROLE_USER");
 			
@@ -133,14 +136,32 @@ public class MemberController {
 	
 	//회원탈퇴
 	@RequestMapping(value="/deleteAction")
-	public void deleteAction(HttpServletResponse res, HttpSession session) throws IOException{
+	@ResponseBody
+	public AjaxResVO deleteAction(HttpServletRequest req, HttpServletResponse res, MemberVO memberVo) throws IOException{
 	
-		String id = (String)session.getAttribute("id");
+		HttpSession session = req.getSession();
+		AjaxResVO resVo     = new AjaxResVO();
 		
-		memberService.deleteMember(id);
+		MemberVO loginUser = util.getCurrentMember();
 		
-		session.invalidate();
+		// 1. 로그인 상태가 아닐시
+		// 2. 프론트로부터 사용자 id의 데이터가 넘어오지 않은 경우
+		// 3. 현재 사용자가 보고있는 페이지의 데이터가 로그인한 사용자와 정보가 다를 때 
+		if(loginUser == null || memberVo.getId() == null || !memberVo.getId().equals(loginUser.getId())) {
+			resVo.setResult("N");
+			resVo.setMessage("올바른 접근이 아닙니다.");
+			resVo.setRedirectUrl("");
+		}else {
+			// 권한 삭제후 해당 계정 삭제
+			memberService.deleteAuth(memberVo);
+			memberService.deleteMember(memberVo);
+			session.invalidate();
+			
+			resVo.setResult("Y");
+			resVo.setMessage("회원탈퇴가 완료되었습니다.");
+			resVo.setRedirectUrl("/");
+		}
 		
-		res.sendRedirect("/");
+		return resVo;
 	}
 }
