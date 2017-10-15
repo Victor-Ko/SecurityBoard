@@ -6,8 +6,17 @@ public class AuthorityVO implements GrantedAuthority{
 
 	private static final long serialVersionUID = 5327661028322678644L;
 	
+	private String id;
 	private String auth;
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Override
 	public String getAuthority() {
 		return auth;

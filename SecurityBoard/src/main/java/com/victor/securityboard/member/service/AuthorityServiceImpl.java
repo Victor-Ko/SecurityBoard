@@ -19,4 +19,9 @@ public class AuthorityServiceImpl implements AuthorityService{
 		return authorityDao.selectAuth(id);
 	}
 
+	@Override
+	public void insertAuth(AuthorityVO authorityVO) {
+		authorityDao.insertAuth(authorityVO);
+	}
+
 }

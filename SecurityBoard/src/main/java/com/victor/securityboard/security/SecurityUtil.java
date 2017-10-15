@@ -1,15 +1,19 @@
 package com.victor.securityboard.security;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import com.victor.securityboard.member.domain.MemberVO;
 import com.victor.securityboard.member.service.MemberService;
-
 
 @Component
 public class SecurityUtil {
@@ -41,11 +45,29 @@ public class SecurityUtil {
 		System.out.println("principal : "+auth.getPrincipal());
 		//System.out.println("deta : " + auth.getDetails());
 
-		LoginUserDetails userInfo = (LoginUserDetails)auth.getPrincipal();
-		if(userInfo == null){
-			throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+		//LoginUserDetails userInfo = (LoginUserDetails)auth.getPrincipal();
+		
+		MemberVO member = null;
+		
+		try {
+			Object principal = auth.getPrincipal();
+			
+			if(principal instanceof LoginUserDetails){ //로그인 시
+				member = ((LoginUserDetails)principal).getMember();
+			}else if(principal instanceof MemberVO){ //로그인 이후
+				member = (MemberVO)principal;
+			}else if(principal instanceof String){
+				if(((String) principal).contains("anonymous")){
+					throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+				}
+			}
+			/*if(userInfo == null){
+				throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+			}*/
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		return userInfo.getMember();
+		return member;
 	}
 }
