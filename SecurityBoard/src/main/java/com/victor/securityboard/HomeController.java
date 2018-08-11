@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.victor.securityboard.member.domain.MemberVO;
 import com.victor.securityboard.security.SecurityUtil;
@@ -31,7 +30,6 @@ public class HomeController {
 		MemberVO member = null;
 		
 		member = util.getCurrentMember();
-		System.out.println("member : " + member);
 		
 		if(member == null){
 			SecurityContextHolder.clearContext();
